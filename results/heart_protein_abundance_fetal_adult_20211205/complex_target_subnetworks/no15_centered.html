@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>Interactions (blue->complex, red->gene target) of proteins with significant abundance change (light green)</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750px;
+            background-color: #FFFFFF;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P40763", "label": "P40763", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q16665", "label": "Q16665", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q99638", "label": "Q99638", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O60671", "label": "O60671", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O60921", "label": "O60921", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "black"}, "id": "P27695", "label": "P27695", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q99966", "label": "Q99966", "shape": "dot"}]);
+        edges = new vis.DataSet([{"arrows": "to", "color": "rgb(20,60,250)", "from": "P40763", "title": "VEGF transcriptional complex", "to": "P27695"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q16665", "title": "VEGF transcriptional complex", "to": "P27695"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q99638", "title": "9-1-1-APE1 complex", "to": "P27695"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O60671", "title": "9-1-1-APE1 complex", "to": "P27695"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O60921", "title": "9-1-1-APE1 complex", "to": "P27695"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P27695", "title": "VEGF transcriptional complex", "to": "P40763"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P27695", "title": "VEGF transcriptional complex", "to": "Q16665"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P27695", "title": "VEGF transcriptional complex", "to": "Q99966"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P27695", "title": "9-1-1-APE1 complex", "to": "O60671"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P27695", "title": "9-1-1-APE1 complex", "to": "O60921"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P27695", "title": "9-1-1-APE1 complex", "to": "Q99638"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q99966", "title": "VEGF transcriptional complex", "to": "P27695"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

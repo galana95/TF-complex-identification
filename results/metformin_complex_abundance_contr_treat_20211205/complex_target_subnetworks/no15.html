@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>Interactions (blue->complex, red->gene target) of proteins with significant abundance change (light green)</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750px;
+            background-color: #FFFFFF;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O88522", "label": "O88522", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P06804", "label": "P06804", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9Z1E3", "label": "Q9Z1E3", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P10889", "label": "P10889", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9JHH5", "label": "Q9JHH5", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O08696", "label": "O08696", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q60680", "label": "Q60680", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P70658", "label": "P70658", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P17515", "label": "P17515", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P18340", "label": "P18340", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O70460", "label": "O70460", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P49117", "label": "P49117", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P25799", "label": "P25799", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P02340", "label": "P02340", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "black"}, "id": "O88351", "label": "O88351", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q8BSK8", "label": "Q8BSK8", "shape": "dot"}]);
+        edges = new vis.DataSet([{"arrows": "to", "color": "rgb(20,60,250)", "from": "O88522", "title": "IkappaB kinase complex", "to": "O88351"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O88522", "title": "IkappaB kinase complex", "to": "Q60680"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q9Z1E3", "title": "Repression", "to": "P25799"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O08696", "title": "Unknown", "to": "O88351"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q60680", "title": "IkappaB kinase complex", "to": "O88351"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q60680", "title": "IkappaB kinase complex", "to": "O88522"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P49117", "title": "Activation", "to": "O88351"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P49117", "title": "Activation", "to": "P25799"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P25799", "title": "Unknown", "to": "P17515"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P25799", "title": "Unknown", "to": "P10889"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P25799", "title": "Activation", "to": "O88351"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P25799", "title": "Activation", "to": "P25799"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P25799", "title": "Activation", "to": "Q9Z1E3"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P25799", "title": "Unknown", "to": "P06804"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P25799", "title": "Repression", "to": "P02340"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P02340", "title": "Repression", "to": "O08696"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P02340", "title": "Unknown", "to": "P25799"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P02340", "title": "Unknown", "to": "P02340"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O88351", "title": "IkappaB kinase complex", "to": "O88522"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O88351", "title": "IkappaB kinase complex", "to": "Q60680"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O88351", "title": "Activation", "to": "O70460"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O88351", "title": "Activation", "to": "P17515"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O88351", "title": "Activation", "to": "Q9JHH5"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O88351", "title": "Activation", "to": "P10889"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O88351", "title": "Activation", "to": "P18340"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O88351", "title": "Activation", "to": "P70658"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O88351", "title": "Unknown", "to": "P25799"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O88351", "title": "Repression", "to": "Q9Z1E3"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O88351", "title": "Activation", "to": "Q8BSK8"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O88351", "title": "Activation", "to": "P06804"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O88351", "title": "Unknown", "to": "P02340"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

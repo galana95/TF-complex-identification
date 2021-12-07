@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>Interactions (blue->complex, red->gene target) of proteins with significant abundance change (light green)</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750px;
+            background-color: #FFFFFF;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O08575", "label": "O08575", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P14439", "label": "P14439", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9DCJ1", "label": "Q9DCJ1", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P97428", "label": "P97428", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P11087", "label": "P11087", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "A0A0U1RP99", "label": "A0A0U1RP99", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q66JY2", "label": "Q66JY2", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P42582", "label": "P42582", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P09535", "label": "P09535", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P01132", "label": "P01132", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q8R2S9", "label": "Q8R2S9", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9DB00", "label": "Q9DB00", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P32114", "label": "P32114", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q8CFA1", "label": "Q8CFA1", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9Z2N8", "label": "Q9Z2N8", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P01101", "label": "P01101", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P63277", "label": "P63277", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P02340", "label": "P02340", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q03358", "label": "Q03358", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q6PIJ4", "label": "Q6PIJ4", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q6ZPV2", "label": "Q6ZPV2", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P01587", "label": "P01587", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q3URU2", "label": "Q3URU2", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P19137", "label": "P19137", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P62509", "label": "P62509", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q60772", "label": "Q60772", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q60520", "label": "Q60520", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P41139", "label": "P41139", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P13405", "label": "P13405", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "black"}, "id": "Q61164", "label": "Q61164", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q99PT3", "label": "Q99PT3", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q921I1", "label": "Q921I1", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q3U1J1", "label": "Q3U1J1", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P70121", "label": "P70121", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q812A5", "label": "Q812A5", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9WTM5", "label": "Q9WTM5", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P06537", "label": "P06537", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P36552", "label": "P36552", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P22777", "label": "P22777", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P60122", "label": "P60122", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q60722", "label": "Q60722", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q8BHA0", "label": "Q8BHA0", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P80206", "label": "P80206", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q8BKH7", "label": "Q8BKH7", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q6QI06", "label": "Q6QI06", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P20029", "label": "P20029", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P47741", "label": "P47741", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q8K4Q0", "label": "Q8K4Q0", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q99L90", "label": "Q99L90", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q04207", "label": "Q04207", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P09803", "label": "P09803", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O09106", "label": "O09106", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P25799", "label": "P25799", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q765H6", "label": "Q765H6", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q80US4", "label": "Q80US4", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "black"}, "id": "Q9JLN9", "label": "Q9JLN9", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O70343", "label": "O70343", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "black"}, "id": "Q00899", "label": "Q00899", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O70157", "label": "O70157", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9WUP7", "label": "Q9WUP7", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P63015", "label": "P63015", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q8R4I1", "label": "Q8R4I1", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P01575", "label": "P01575", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q62231", "label": "Q62231", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q91ZI0", "label": "Q91ZI0", "shape": "dot"}]);
+        edges = new vis.DataSet([{"arrows": "to", "color": "rgb(240,50,50)", "from": "O08575", "title": "Activation", "to": "Q9JLN9"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9DCJ1", "title": "mTORC2 complex;mTORC1 complex", "to": "Q9JLN9"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "A0A0U1RP99", "title": "INO80 chromatin remodeling complex", "to": "Q00899"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q66JY2", "title": "INO80 chromatin remodeling complex", "to": "Q00899"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q8R2S9", "title": "INO80 chromatin remodeling complex", "to": "Q00899"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9DB00", "title": "Gon4l-Hdac1-Sin3a-Yy1 complex", "to": "Q00899"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9Z2N8", "title": "INO80 chromatin remodeling complex", "to": "Q00899"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q6PIJ4", "title": "INO80 chromatin remodeling complex", "to": "Q00899"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q6ZPV2", "title": "INO80 chromatin remodeling complex", "to": "Q00899"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P62509", "title": "Unknown", "to": "Q00899"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q60520", "title": "Gon4l-Hdac1-Sin3a-Yy1 complex", "to": "Q00899"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q61164", "title": "Unknown", "to": "Q8R4I1"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q61164", "title": "Unknown", "to": "Q91ZI0"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q61164", "title": "Unknown", "to": "P01587"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q61164", "title": "Unknown", "to": "P09535"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q61164", "title": "Unknown", "to": "Q8CFA1"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q61164", "title": "Activation", "to": "Q765H6"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q61164", "title": "Unknown", "to": "P63015"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q99PT3", "title": "INO80 chromatin remodeling complex", "to": "Q00899"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q3U1J1", "title": "INO80 chromatin remodeling complex", "to": "Q00899"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q812A5", "title": "mTORC2 complex", "to": "Q9JLN9"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9WTM5", "title": "INO80 chromatin remodeling complex", "to": "Q00899"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P60122", "title": "INO80 chromatin remodeling complex", "to": "Q00899"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q8BHA0", "title": "INO80 chromatin remodeling complex", "to": "Q00899"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q8BKH7", "title": "mTORC2 complex", "to": "Q9JLN9"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q6QI06", "title": "mTORC2 complex", "to": "Q9JLN9"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q8K4Q0", "title": "mTORC1 complex", "to": "Q9JLN9"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q99L90", "title": "INO80 chromatin remodeling complex", "to": "Q00899"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "Q00899"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O09106", "title": "Gon4l-Hdac1-Sin3a-Yy1 complex", "to": "Q00899"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P25799", "title": "Unknown", "to": "Q00899"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q80US4", "title": "INO80 chromatin remodeling complex", "to": "Q00899"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9JLN9", "title": "Mtor-Yy1-Ppargc1a complex", "to": "O70343"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9JLN9", "title": "Mtor-Yy1-Ppargc1a complex", "to": "Q00899"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9JLN9", "title": "mTORC2 complex", "to": "Q6QI06"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9JLN9", "title": "mTORC2 complex", "to": "Q812A5"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9JLN9", "title": "mTORC2 complex", "to": "Q8BKH7"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9JLN9", "title": "mTORC2 complex;mTORC1 complex", "to": "Q9DCJ1"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9JLN9", "title": "mTORC1 complex", "to": "Q8K4Q0"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O70343", "title": "Yy1-Ppargc1a complex;Mtor-Yy1-Ppargc1a complex", "to": "Q00899"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O70343", "title": "Mtor-Yy1-Ppargc1a complex", "to": "Q9JLN9"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q00899", "title": "Yy1-Ppargc1a complex;Mtor-Yy1-Ppargc1a complex", "to": "O70343"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q00899", "title": "Mtor-Yy1-Ppargc1a complex", "to": "Q9JLN9"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q00899", "title": "Gon4l-Hdac1-Sin3a-Yy1 complex", "to": "O09106"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q00899", "title": "Gon4l-Hdac1-Sin3a-Yy1 complex", "to": "Q60520"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q00899", "title": "Gon4l-Hdac1-Sin3a-Yy1 complex", "to": "Q9DB00"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q00899", "title": "INO80 chromatin remodeling complex", "to": "A0A0U1RP99"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q00899", "title": "INO80 chromatin remodeling complex", "to": "P60122"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q00899", "title": "INO80 chromatin remodeling complex", "to": "Q3U1J1"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q00899", "title": "INO80 chromatin remodeling complex", "to": "Q66JY2"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q00899", "title": "INO80 chromatin remodeling complex", "to": "Q6PIJ4"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q00899", "title": "INO80 chromatin remodeling complex", "to": "Q6ZPV2"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q00899", "title": "INO80 chromatin remodeling complex", "to": "Q80US4"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q00899", "title": "INO80 chromatin remodeling complex", "to": "Q8BHA0"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q00899", "title": "INO80 chromatin remodeling complex", "to": "Q8R2S9"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q00899", "title": "INO80 chromatin remodeling complex", "to": "Q99L90"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q00899", "title": "INO80 chromatin remodeling complex", "to": "Q99PT3"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q00899", "title": "INO80 chromatin remodeling complex", "to": "Q9WTM5"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q00899", "title": "INO80 chromatin remodeling complex", "to": "Q9WUP7"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q00899", "title": "INO80 chromatin remodeling complex", "to": "Q9Z2N8"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Activation", "to": "P63277"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Repression", "to": "P09803"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Activation", "to": "Q60772"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Activation", "to": "P11087"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Unknown", "to": "P36552"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Repression", "to": "P01132"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Repression", "to": "P01101"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Repression", "to": "P14439"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Activation", "to": "P20029"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Repression", "to": "P41139"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Repression", "to": "P01575"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Activation", "to": "P19137"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Activation", "to": "Q03358"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Unknown", "to": "P42582"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Unknown", "to": "P06537"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Activation", "to": "P80206"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Activation", "to": "P32114"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Unknown", "to": "Q3URU2"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Unknown", "to": "P13405"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Repression", "to": "P97428"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Repression", "to": "P22777"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Repression", "to": "Q60722"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Unknown", "to": "P47741"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Activation", "to": "O70157"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Unknown", "to": "Q921I1"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Activation", "to": "P02340"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q00899", "title": "Activation", "to": "P70121"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9WUP7", "title": "INO80 chromatin remodeling complex", "to": "Q00899"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q62231", "title": "Activation", "to": "Q9JLN9"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

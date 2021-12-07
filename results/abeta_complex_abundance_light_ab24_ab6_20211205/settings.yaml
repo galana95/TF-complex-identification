@@ -1,0 +1,44 @@
+COMPARISON SETTINGS: default
+DATA TYPE: Complex
+FILTER SETTINGS:
+  COMPLEX DB:
+  - complexportal
+  - corum
+  FILTER:
+  - tf_complex
+  - minprotnum2
+  OPERATOR: UNION
+  TARGET DB:
+  - tftarget
+  - trrust
+  TFCOMPLEX: ATF
+  TRANSCRIPTION COFACTOR DB:
+  - animal_tfdb3
+  TRANSCRIPTION FACTOR DB:
+  - jaspar
+  - human_tfnames
+  - animal_tfdb3
+  - yeastract
+INPUT1:
+  DELIMITER: ','
+  FILENAME: Ab_24_prediction_up.csv
+  NAME: Ab24
+INPUT2:
+  DELIMITER: ','
+  FILENAME: Ab_6_prediction_up.csv
+  NAME: Ab6
+REPORTER VISUALIZER SETTINGS:
+  COMPLEX: true
+  OVERWRITE EXISTING: true
+  REGULATION: true
+  SAVE FIGURES: true
+  THEME: Light
+  TISSUE:
+  - heart
+  - blood
+  - embryo
+  USE DB: ALL
+  USE LOG: true
+RUN NAME: abeta_complex_abundance_light
+SPECIES: yeast
+VERBOSITY: 3

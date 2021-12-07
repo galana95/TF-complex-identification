@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>Interactions (blue->complex, red->gene target) of proteins with significant abundance change (light green)</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750px;
+            background-color: #FFFFFF;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q99ML1", "label": "Q99ML1", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q07813", "label": "Q07813", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P39689", "label": "P39689", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P63028", "label": "P63028", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "black"}, "id": "Q9JKX4", "label": "Q9JKX4", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P02340", "label": "P02340", "shape": "dot"}]);
+        edges = new vis.DataSet([{"arrows": "to", "color": "rgb(20,60,250)", "from": "Q99ML1", "title": "Bcl-xL-p53-PUMA complex, DNA damage induced", "to": "P02340"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q07813", "title": "BAX oligomer", "to": "Q07813"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q9JKX4", "title": "Unknown", "to": "Q07813"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q9JKX4", "title": "Unknown", "to": "Q99ML1"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q9JKX4", "title": "Unknown", "to": "P39689"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q9JKX4", "title": "Activation", "to": "P63028"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q9JKX4", "title": "Activation", "to": "P02340"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P02340", "title": "Unknown", "to": "Q99ML1"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P02340", "title": "Unknown", "to": "Q07813"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P02340", "title": "Unknown", "to": "P39689"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P02340", "title": "Unknown", "to": "P63028"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P02340", "title": "Unknown", "to": "P02340"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

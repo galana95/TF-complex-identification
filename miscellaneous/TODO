@@ -1,0 +1,39 @@
+Programming
+
+Check important UNIPROT data with xml hierarchy and CORUM
+ADD important UNIPROT data with xml parser
+
+Better network analysis and comparison
+Optimization with numba and better memory management
+
+
+
+
+
+Thesis introduction
+
+Transcription factors and gene targets
+Protein complexes
+Transcription factor complexes and gene targets
+Databases
+Complex prediction
+Proteins and complexes in treated and untreated systems
+
+
+Thesis methods
+
+Putting together the database
+Comparing proteins
+Comparing complexes
+    Network creation
+    Network analysis/metrics
+Find interesting stuff based on comparisons
+Programming methods (python, conda, packages, xml parsing)
+The FRAMEWORK
+
+
+Thesis results
+
+
+
+

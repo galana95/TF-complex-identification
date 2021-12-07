@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>Interactions (blue->complex, red->gene target) of proteins with significant abundance change (light green)</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750px;
+            background-color: #121212;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P22361", "label": "P22361", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q9Z188", "label": "Q9Z188", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "white"}, "id": "Q9CZL5", "label": "Q9CZL5", "shape": "dot"}]);
+        edges = new vis.DataSet([{"arrows": "to", "color": "rgb(20,60,250)", "from": "P22361", "title": "Dyrk1b-Hnf1a-Pcbd2 complex", "to": "Q9CZL5"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9Z188", "title": "Dyrk1b-Hnf1a-Pcbd2 complex", "to": "Q9CZL5"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9CZL5", "title": "Dyrk1b-Hnf1a-Pcbd2 complex", "to": "P22361"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9CZL5", "title": "Dyrk1b-Hnf1a-Pcbd2 complex", "to": "Q9Z188"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

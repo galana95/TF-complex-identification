@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>Interactions (blue->complex, red->gene target) of proteins with significant abundance change (light green)</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750px;
+            background-color: #FFFFFF;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P36148", "label": "P36148", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P25502", "label": "P25502", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P39943", "label": "P39943", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q03465", "label": "Q03465", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P11938", "label": "P11938", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "black"}, "id": "P0CY11", "label": "P0CY11", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P25302", "label": "P25302", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P03069", "label": "P03069", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P25042", "label": "P25042", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P32862", "label": "P32862", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P04386", "label": "P04386", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P33749", "label": "P33749", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P33122", "label": "P33122", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q12041", "label": "Q12041", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P19880", "label": "P19880", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P52488", "label": "P52488", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P17106", "label": "P17106", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P0CY08", "label": "P0CY08", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P14064", "label": "P14064", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P25583", "label": "P25583", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P38165", "label": "P38165", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P33200", "label": "P33200", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q06596", "label": "Q06596", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P38889", "label": "P38889", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P07261", "label": "P07261", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P08153", "label": "P08153", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P33748", "label": "P33748", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P18494", "label": "P18494", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P21192", "label": "P21192", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q03081", "label": "Q03081", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P38699", "label": "P38699", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P32389", "label": "P32389", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P21538", "label": "P21538", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P11746", "label": "P11746", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P22035", "label": "P22035", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P40535", "label": "P40535", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P32329", "label": "P32329", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P40917", "label": "P40917", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P39970", "label": "P39970", "shape": "dot"}]);
+        edges = new vis.DataSet([{"arrows": "to", "color": "rgb(240,50,50)", "from": "P36148", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P25502", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P39943", "title": "", "to": "P25583"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P39943", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q03465", "title": "", "to": "P25583"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q03465", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q03465", "title": "", "to": "P25302"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P11938", "title": "RAP1-GCR1 transcription activation complex;RAP1-GCR1-GCR2 transcription activation complex", "to": "P07261"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P11938", "title": "", "to": "P25583"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P11938", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P11938", "title": "", "to": "P25302"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P0CY11", "title": "Mating-type MATalpha2-MATa1 complex", "to": "P0CY08"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P25302", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P25302", "title": "", "to": "P25302"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P03069", "title": "", "to": "P25583"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P03069", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P03069", "title": "", "to": "P25302"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P25042", "title": "", "to": "P25583"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P25042", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P32862", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P04386", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33749", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33122", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q12041", "title": "MET4-MET28-MET32 sulfur metabolism transcription factor complex ", "to": "P32389"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q12041", "title": "", "to": "P25583"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q12041", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P19880", "title": "", "to": "P25583"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P19880", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P19880", "title": "", "to": "P25302"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P52488", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P17106", "title": "CBF1-MET4-MET28 sulfur metabolism transcription factor complex ", "to": "P32389"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P17106", "title": "", "to": "P25583"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P17106", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P17106", "title": "", "to": "P25302"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P0CY08", "title": "Mating-type MATalpha2-MATa1 complex", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P0CY08", "title": "Mating-type MATalpha2-MCM1 complex ", "to": "P11746"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P14064", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P14064", "title": "", "to": "P25302"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P25583", "title": "", "to": "P25583"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P25583", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P25583", "title": "", "to": "P25302"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P38165", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33200", "title": "", "to": "P25583"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33200", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33200", "title": "", "to": "P25302"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q06596", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P38889", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P07261", "title": "RAP1-GCR1 transcription activation complex;RAP1-GCR1-GCR2 transcription activation complex", "to": "P11938"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P07261", "title": "", "to": "P25583"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P07261", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P07261", "title": "", "to": "P25302"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P08153", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33748", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P18494", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P21192", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q03081", "title": "MET4-MET28-MET31 sulfur metabolism transcription factor complex", "to": "P32389"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q03081", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P38699", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P32389", "title": "MET4-MET28-MET31 sulfur metabolism transcription factor complex", "to": "Q03081"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P32389", "title": "MET4-MET28-MET32 sulfur metabolism transcription factor complex ", "to": "Q12041"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P32389", "title": "CBF1-MET4-MET28 sulfur metabolism transcription factor complex ", "to": "P17106"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P32389", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P21538", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P21538", "title": "", "to": "P25302"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P11746", "title": "Mating-type MATalpha2-MCM1 complex ", "to": "P0CY08"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P11746", "title": "", "to": "P25583"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P11746", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P11746", "title": "", "to": "P25302"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P22035", "title": "", "to": "P25583"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P22035", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P40535", "title": "", "to": "P25583"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P40535", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P32329", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P40917", "title": "", "to": "P0CY11"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P39970", "title": "", "to": "P0CY11"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

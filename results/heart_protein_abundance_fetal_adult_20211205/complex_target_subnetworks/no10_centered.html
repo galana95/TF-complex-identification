@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>Interactions (blue->complex, red->gene target) of proteins with significant abundance change (light green)</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750px;
+            background-color: #FFFFFF;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P04637", "label": "P04637", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9UJU2", "label": "Q9UJU2", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q13643", "label": "Q13643", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P16220", "label": "P16220", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "black"}, "id": "Q14192", "label": "Q14192", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q5TD97", "label": "Q5TD97", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P16422", "label": "P16422", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q96EB6", "label": "Q96EB6", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P35222", "label": "P35222", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q12778", "label": "Q12778", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9H2X6", "label": "Q9H2X6", "shape": "dot"}]);
+        edges = new vis.DataSet([{"arrows": "to", "color": "rgb(20,60,250)", "from": "P04637", "title": "FHL2-p53-HIPK2 complex", "to": "Q14192"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9UJU2", "title": "CTNNB1-EPCAM-FHL2-LEF1 complex", "to": "Q14192"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q13643", "title": "FHL2-FHL3 complex", "to": "Q14192"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P16220", "title": "", "to": "Q14192"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q14192", "title": "FHL2-p53-HIPK2 complex", "to": "P04637"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q14192", "title": "FHL2-p53-HIPK2 complex", "to": "Q9H2X6"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q14192", "title": "FOXO1-FHL2-SIRT1 complex", "to": "Q12778"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q14192", "title": "FOXO1-FHL2-SIRT1 complex", "to": "Q96EB6"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q14192", "title": "FHL2 homodimer complex", "to": "Q14192"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q14192", "title": "FHL2-FHL3 complex", "to": "Q13643"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q14192", "title": "FHL2-ACT complex", "to": "Q5TD97"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q14192", "title": "FHL2-CREB complex", "to": "P16220"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q14192", "title": "CTNNB1-EPCAM-FHL2-LEF1 complex", "to": "P16422"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q14192", "title": "CTNNB1-EPCAM-FHL2-LEF1 complex", "to": "P35222"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q14192", "title": "CTNNB1-EPCAM-FHL2-LEF1 complex", "to": "Q9UJU2"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q5TD97", "title": "FHL2-ACT complex", "to": "Q14192"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P16422", "title": "CTNNB1-EPCAM-FHL2-LEF1 complex", "to": "Q14192"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q96EB6", "title": "FOXO1-FHL2-SIRT1 complex", "to": "Q14192"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P35222", "title": "CTNNB1-EPCAM-FHL2-LEF1 complex", "to": "Q14192"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q12778", "title": "FOXO1-FHL2-SIRT1 complex", "to": "Q14192"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9H2X6", "title": "FHL2-p53-HIPK2 complex", "to": "Q14192"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

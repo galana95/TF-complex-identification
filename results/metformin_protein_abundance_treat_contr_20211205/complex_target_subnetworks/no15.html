@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>Interactions (blue->complex, red->gene target) of proteins with significant abundance change (light green)</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750px;
+            background-color: #FFFFFF;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O70373", "label": "O70373", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P70188", "label": "P70188", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "black"}, "id": "P30999", "label": "P30999", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P15116", "label": "P15116", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q61771", "label": "Q61771", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q02248", "label": "Q02248", "shape": "dot"}]);
+        edges = new vis.DataSet([{"arrows": "to", "color": "rgb(20,60,250)", "from": "O70373", "title": "Xin-Cdh2-Ctnnb1-Ctnnd1 complex", "to": "P15116"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O70373", "title": "Xin-Cdh2-Ctnnb1-Ctnnd1 complex", "to": "P30999"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O70373", "title": "Xin-Cdh2-Ctnnb1-Ctnnd1 complex", "to": "Q02248"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P70188", "title": "Kif3-cadherin-catenin complex", "to": "P15116"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P70188", "title": "Kif3-cadherin-catenin complex", "to": "P30999"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P70188", "title": "Kif3-cadherin-catenin complex", "to": "Q02248"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P70188", "title": "Kif3-cadherin-catenin complex;Kinesin II complex (Kif3a-Kif3b-Kifap3);KIF3 complex variant AB-KAP3", "to": "Q61771"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P30999", "title": "Xin-Cdh2-Ctnnb1-Ctnnd1 complex", "to": "O70373"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P30999", "title": "Xin-Cdh2-Ctnnb1-Ctnnd1 complex;Kif3-cadherin-catenin complex", "to": "P15116"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P30999", "title": "Xin-Cdh2-Ctnnb1-Ctnnd1 complex;Kif3-cadherin-catenin complex", "to": "Q02248"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P30999", "title": "Kif3-cadherin-catenin complex", "to": "P70188"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P30999", "title": "Kif3-cadherin-catenin complex", "to": "Q61771"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P15116", "title": "PS1-E-cadherin-catenin complex, brain;Xin-Cdh2-Ctnnb1-Ctnnd1 complex;Kif3-cadherin-catenin complex", "to": "Q02248"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P15116", "title": "Xin-Cdh2-Ctnnb1-Ctnnd1 complex", "to": "O70373"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P15116", "title": "Xin-Cdh2-Ctnnb1-Ctnnd1 complex;Kif3-cadherin-catenin complex", "to": "P30999"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P15116", "title": "Kif3-cadherin-catenin complex", "to": "P70188"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P15116", "title": "Kif3-cadherin-catenin complex", "to": "Q61771"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q61771", "title": "Kif3-cadherin-catenin complex", "to": "P15116"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q61771", "title": "Kif3-cadherin-catenin complex", "to": "P30999"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q61771", "title": "Kif3-cadherin-catenin complex;Kinesin II complex (Kif3a-Kif3b-Kifap3);KIF3 complex variant AB-KAP3", "to": "P70188"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q61771", "title": "Kif3-cadherin-catenin complex", "to": "Q02248"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q02248", "title": "PS1-E-cadherin-catenin complex, brain;Xin-Cdh2-Ctnnb1-Ctnnd1 complex;Kif3-cadherin-catenin complex", "to": "P15116"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q02248", "title": "Xin-Cdh2-Ctnnb1-Ctnnd1 complex", "to": "O70373"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q02248", "title": "Xin-Cdh2-Ctnnb1-Ctnnd1 complex;Kif3-cadherin-catenin complex", "to": "P30999"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q02248", "title": "Kif3-cadherin-catenin complex", "to": "P70188"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q02248", "title": "Kif3-cadherin-catenin complex", "to": "Q61771"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

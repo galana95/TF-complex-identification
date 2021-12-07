@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>Interactions (blue->complex, red->gene target) of proteins with significant abundance change (light green)</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750px;
+            background-color: #FFFFFF;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "CHEBI:29108", "label": "CHEBI:29108", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P35228", "label": "P35228", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P06702", "label": "P06702", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "CHEBI:29105", "label": "CHEBI:29105", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "black"}, "id": "P05109", "label": "P05109", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "CHEBI:29035", "label": "CHEBI:29035", "shape": "dot"}]);
+        edges = new vis.DataSet([{"arrows": "to", "color": "rgb(20,60,250)", "from": "CHEBI:29108", "title": "Calprotectin heterotetramer;Calprotectin heterodimer;S100A8 complex", "to": "P05109"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P35228", "title": "iNOS-S100A8/A9 complex;iNOS-S100A8/A9 complex", "to": "P05109"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P06702", "title": "Calprotectin heterotetramer;iNOS-S100A8/A9 complex;Calprotectin heterotetramer;Calprotectin heterodimer;iNOS-S100A8/A9 complex", "to": "P05109"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "CHEBI:29105", "title": "Calprotectin heterotetramer;Calprotectin heterodimer", "to": "P05109"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P05109", "title": "Calprotectin heterotetramer;iNOS-S100A8/A9 complex;Calprotectin heterotetramer;Calprotectin heterodimer;iNOS-S100A8/A9 complex", "to": "P06702"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P05109", "title": "iNOS-S100A8/A9 complex;iNOS-S100A8/A9 complex", "to": "P35228"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P05109", "title": "Calprotectin heterotetramer;Calprotectin heterodimer", "to": "CHEBI:29035"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P05109", "title": "Calprotectin heterotetramer;Calprotectin heterodimer", "to": "CHEBI:29105"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P05109", "title": "Calprotectin heterotetramer;Calprotectin heterodimer;S100A8 complex", "to": "CHEBI:29108"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "CHEBI:29035", "title": "Calprotectin heterotetramer;Calprotectin heterodimer", "to": "P05109"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>Interactions (blue->complex, red->gene target) of proteins with significant abundance change (light green)</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750px;
+            background-color: #FFFFFF;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P28749", "label": "P28749", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O00255", "label": "O00255", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O15550", "label": "O15550", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q96IK1", "label": "Q96IK1", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P51610", "label": "P51610", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9BTK6", "label": "Q9BTK6", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9BQ87", "label": "Q9BQ87", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9UPS6", "label": "Q9UPS6", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P30876", "label": "P30876", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9BZK7", "label": "Q9BZK7", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O14686", "label": "O14686", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q8NFC6", "label": "Q8NFC6", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P60709", "label": "P60709", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9Y5Z7", "label": "Q9Y5Z7", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9P0U4", "label": "Q9P0U4", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q12824", "label": "Q12824", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q13263", "label": "Q13263", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q08999", "label": "Q08999", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O00422", "label": "O00422", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O15379", "label": "O15379", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q13287", "label": "Q13287", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O15294", "label": "O15294", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q03164", "label": "Q03164", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P68431", "label": "P68431", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q13813", "label": "Q13813", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q92922", "label": "Q92922", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q14839", "label": "Q14839", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9UBL3", "label": "Q9UBL3", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9UMN6", "label": "Q9UMN6", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q14686", "label": "Q14686", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O75475", "label": "O75475", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "black"}, "id": "Q9C005", "label": "Q9C005", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O15047", "label": "O15047", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9UKL0", "label": "Q9UKL0", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9NPJ6", "label": "Q9NPJ6", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q6ZW49", "label": "Q6ZW49", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q8NEZ4", "label": "Q8NEZ4", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9H503", "label": "Q9H503", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q6UXN9", "label": "Q6UXN9", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q15291", "label": "Q15291", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P20700", "label": "P20700", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q13547", "label": "Q13547", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P61964", "label": "P61964", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q8TAQ2", "label": "Q8TAQ2", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P50402", "label": "P50402", "shape": "dot"}]);
+        edges = new vis.DataSet([{"arrows": "to", "color": "rgb(20,60,250)", "from": "P28749", "title": "Emerin complex 32", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O00255", "title": "Menin-associated histone methyltransferase complex;MLL2 complex;MLL1 complex", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O15550", "title": "PTIP-HMT complex;MLL3 complex;MLL4 complex", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q96IK1", "title": "Set1B complex", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P51610", "title": "MLL2 complex;MLL1 complex;Set1A complex;Set1B complex", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9BTK6", "title": "PTIP-HMT complex;MLL3 complex;MLL4 complex", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9BQ87", "title": "Emerin complex 32", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9UPS6", "title": "Set1B complex", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P30876", "title": "Menin-associated histone methyltransferase complex", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9BZK7", "title": "Emerin complex 32", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O14686", "title": "MLL2 complex;MLL4 complex", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q8NFC6", "title": "Set1B complex", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P60709", "title": "Emerin complex 32", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9Y5Z7", "title": "MLL2 complex;Set1A complex;Set1B complex", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9P0U4", "title": "Set1A complex;Set1B complex", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q12824", "title": "Emerin complex 32", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q13263", "title": "Emerin complex 32", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q08999", "title": "Emerin complex 32", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O00422", "title": "Emerin complex 32", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O15379", "title": "Emerin complex 32", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q13287", "title": "Emerin complex 32", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O15294", "title": "MLL2 complex;MLL1 complex;Set1A complex;Set1B complex", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q03164", "title": "MLL1 complex", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P68431", "title": "Emerin complex 32", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q13813", "title": "Emerin complex 32", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q92922", "title": "Emerin complex 32", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q14839", "title": "Emerin complex 32", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9UBL3", "title": "Menin-associated histone methyltransferase complex;PTIP-HMT complex;MLL2 complex;MLL3 complex;MLL1 complex;MLL4 complex;Set1A complex;Set1B complex;WRAD  complex (WDR5, RBBP5, ASH2L, DPY30)", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9UMN6", "title": "Menin-associated histone methyltransferase complex;PTIP-HMT complex", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q14686", "title": "PTIP-HMT complex;MLL3 complex;MLL4 complex", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O75475", "title": "MLL2 complex", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Menin-associated histone methyltransferase complex;MLL2 complex;MLL1 complex", "to": "O00255"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Menin-associated histone methyltransferase complex", "to": "P30876"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Menin-associated histone methyltransferase complex;PTIP-HMT complex;MLL2 complex;MLL3 complex;MLL1 complex;MLL4 complex;Set1A complex;Set1B complex;WRAD  complex (WDR5, RBBP5, ASH2L, DPY30)", "to": "P61964"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Menin-associated histone methyltransferase complex;PTIP-HMT complex;MLL2 complex;MLL3 complex;MLL1 complex;MLL4 complex;Set1A complex;Set1B complex;WRAD  complex (WDR5, RBBP5, ASH2L, DPY30)", "to": "Q15291"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Menin-associated histone methyltransferase complex;PTIP-HMT complex;MLL2 complex;MLL3 complex;MLL1 complex;MLL4 complex;Set1A complex;Set1B complex;WRAD  complex (WDR5, RBBP5, ASH2L, DPY30)", "to": "Q9UBL3"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Menin-associated histone methyltransferase complex;PTIP-HMT complex", "to": "Q9UMN6"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "PTIP-HMT complex;MLL3 complex;MLL4 complex", "to": "O15550"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "PTIP-HMT complex;MLL3 complex;MLL4 complex", "to": "Q14686"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "PTIP-HMT complex;MLL3 complex;MLL4 complex", "to": "Q6ZW49"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "PTIP-HMT complex;MLL3 complex", "to": "Q8NEZ4"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "PTIP-HMT complex;MLL3 complex;MLL4 complex", "to": "Q9BTK6"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Emerin complex 32", "to": "O00422"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Emerin complex 32", "to": "O15379"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Emerin complex 32", "to": "P20700"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Emerin complex 32", "to": "P28749"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Emerin complex 32", "to": "P50402"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Emerin complex 32", "to": "P60709"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Emerin complex 32", "to": "P68431"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Emerin complex 32", "to": "Q08999"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Emerin complex 32", "to": "Q12824"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Emerin complex 32", "to": "Q13263"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Emerin complex 32", "to": "Q13287"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Emerin complex 32", "to": "Q13547"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Emerin complex 32", "to": "Q13813"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Emerin complex 32", "to": "Q14839"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Emerin complex 32", "to": "Q8TAQ2"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Emerin complex 32", "to": "Q92922"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Emerin complex 32", "to": "Q9BQ87"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Emerin complex 32", "to": "Q9BZK7"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Emerin complex 32", "to": "Q9H503"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Emerin complex 32", "to": "Q9NPJ6"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Emerin complex 32", "to": "Q9UKL0"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "MLL2 complex;MLL4 complex", "to": "O14686"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "MLL2 complex;MLL1 complex;Set1A complex;Set1B complex", "to": "O15294"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "MLL2 complex", "to": "O75475"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "MLL2 complex;MLL1 complex;Set1A complex;Set1B complex", "to": "P51610"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "MLL2 complex;Set1A complex;Set1B complex", "to": "Q9Y5Z7"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "MLL1 complex", "to": "Q03164"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Set1A complex", "to": "O15047"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Set1A complex;Set1B complex", "to": "Q6UXN9"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Set1A complex;Set1B complex", "to": "Q9P0U4"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Set1B complex", "to": "Q8NFC6"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Set1B complex", "to": "Q96IK1"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9C005", "title": "Set1B complex", "to": "Q9UPS6"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O15047", "title": "Set1A complex", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9UKL0", "title": "Emerin complex 32", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9NPJ6", "title": "Emerin complex 32", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q6ZW49", "title": "PTIP-HMT complex;MLL3 complex;MLL4 complex", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q8NEZ4", "title": "PTIP-HMT complex;MLL3 complex", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9H503", "title": "Emerin complex 32", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q6UXN9", "title": "Set1A complex;Set1B complex", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q15291", "title": "Menin-associated histone methyltransferase complex;PTIP-HMT complex;MLL2 complex;MLL3 complex;MLL1 complex;MLL4 complex;Set1A complex;Set1B complex;WRAD  complex (WDR5, RBBP5, ASH2L, DPY30)", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P20700", "title": "", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q13547", "title": "", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P61964", "title": "Menin-associated histone methyltransferase complex;PTIP-HMT complex;MLL2 complex;MLL3 complex;MLL1 complex;MLL4 complex;Set1A complex;Set1B complex;WRAD  complex (WDR5, RBBP5, ASH2L, DPY30)", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q8TAQ2", "title": "Emerin complex 32", "to": "Q9C005"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P50402", "title": "Emerin complex 32", "to": "Q9C005"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

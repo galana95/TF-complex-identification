@@ -1,0 +1,43 @@
+COMPARISON SETTINGS: default
+DATA TYPE: Protein
+FILTER SETTINGS:
+  COMPLEX DB:
+  - complexportal
+  - corum
+  FILTER:
+  - tf
+  OPERATOR: UNION
+  TARGET DB:
+  - tftarget
+  - trrust
+  TFCOMPLEX: ATF
+  TRANSCRIPTION COFACTOR DB:
+  - animal_tfdb3
+  TRANSCRIPTION FACTOR DB:
+  - jaspar
+  - human_tfnames
+  - animal_tfdb3
+  - yeastract
+INPUT1:
+  DELIMITER: "\t"
+  FILENAME: metformin_liver_abd.txt
+  NAME: Treated
+INPUT2:
+  DELIMITER: "\t"
+  FILENAME: metformin_std_liver_abd.txt
+  NAME: Control
+REPORTER VISUALIZER SETTINGS:
+  COMPLEX: true
+  OVERWRITE EXISTING: true
+  REGULATION: true
+  SAVE FIGURES: true
+  THEME: Light
+  TISSUE:
+  - heart
+  - blood
+  - embryo
+  USE DB: ALL
+  USE LOG: true
+RUN NAME: metformin_protein_abundance
+SPECIES: mouse
+VERBOSITY: 3

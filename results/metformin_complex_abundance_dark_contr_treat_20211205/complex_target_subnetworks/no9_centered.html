@@ -1,0 +1,204 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>Interactions (blue->complex, red->gene target) of proteins with significant abundance change (light green)</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750px;
+            background-color: #121212;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+        #loadingBar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width: 100%;
+            height: 750px;
+            background-color:rgba(200,200,200,0.8);
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -ms-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+            opacity:1;
+        }
+
+        #bar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width:20px;
+            height:20px;
+            margin:auto auto auto auto;
+            border-radius:11px;
+            border:2px solid rgba(30,30,30,0.05);
+            background: rgb(0, 173, 246); /* Old browsers */
+            box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+        }
+
+        #border {
+            position:absolute;
+            top:10px;
+            left:10px;
+            width:500px;
+            height:23px;
+            margin:auto auto auto auto;
+            box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+            border-radius:10px;
+        }
+
+        #text {
+            position:absolute;
+            top:8px;
+            left:530px;
+            width:30px;
+            height:50px;
+            margin:auto auto auto auto;
+            font-size:22px;
+            color: #000000;
+        }
+
+        div.outerBorder {
+            position:relative;
+            top:400px;
+            width:600px;
+            height:44px;
+            margin:auto auto auto auto;
+            border:8px solid rgba(0,0,0,0.1);
+            background: rgb(252,252,252); /* Old browsers */
+            background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+            background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+            border-radius:72px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+        }
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+<div id="loadingBar">
+    <div class="outerBorder">
+        <div id="text">0%</div>
+        <div id="border">
+            <div id="bar"></div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q9QZ82", "label": "Q9QZ82", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P09528", "label": "P09528", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P04351", "label": "P04351", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "O70571", "label": "O70571", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P08226", "label": "P08226", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P14142", "label": "P14142", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q60860", "label": "Q60860", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P06804", "label": "P06804", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P70302", "label": "P70302", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q62401", "label": "Q62401", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q923E4", "label": "Q923E4", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P28862", "label": "P28862", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q9Z1W9", "label": "Q9Z1W9", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P29533", "label": "P29533", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P97792", "label": "P97792", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q60769", "label": "Q60769", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P43432", "label": "P43432", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "O70494", "label": "O70494", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q01815", "label": "Q01815", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q08048", "label": "Q08048", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P70669", "label": "P70669", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q00899", "label": "Q00899", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P24604", "label": "P24604", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P27814", "label": "P27814", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P42227", "label": "P42227", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P26687", "label": "P26687", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q99JW5", "label": "Q99JW5", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "O88593", "label": "O88593", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P29477", "label": "P29477", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "O89090", "label": "O89090", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q61501", "label": "Q61501", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P51450", "label": "P51450", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P47741", "label": "P47741", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "white"}, "id": "Q04207", "label": "Q04207", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "O08586", "label": "O08586", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P22561", "label": "P22561", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P43006", "label": "P43006", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q61658", "label": "Q61658", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q3THK3", "label": "Q3THK3", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P01101", "label": "P01101", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P41047", "label": "P41047", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P43241", "label": "P43241", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q9ER97", "label": "Q9ER97", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P07141", "label": "P07141", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "B2RWS6", "label": "B2RWS6", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P01108", "label": "P01108", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P18893", "label": "P18893", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "O35732", "label": "O35732", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P49764", "label": "P49764", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q04887", "label": "Q04887", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P35428", "label": "P35428", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P23204", "label": "P23204", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q5SF07", "label": "Q5SF07", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q9QUN7", "label": "Q9QUN7", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q07243", "label": "Q07243", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P01575", "label": "P01575", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "O54942", "label": "O54942", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q9Z1W8", "label": "Q9Z1W8", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P11859", "label": "P11859", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P97372", "label": "P97372", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P02802", "label": "P02802", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P42082", "label": "P42082", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q07174", "label": "Q07174", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P52624", "label": "P52624", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P70658", "label": "P70658", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P17515", "label": "P17515", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q9WU72", "label": "Q9WU72", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P02340", "label": "P02340", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P25799", "label": "P25799", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P08505", "label": "P08505", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q059Y8", "label": "Q059Y8", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "white"}, "id": "P13864", "label": "P13864", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P25322", "label": "P25322", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q8C863", "label": "Q8C863", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q9EQ14", "label": "Q9EQ14", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q9JI44", "label": "Q9JI44", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P31750", "label": "P31750", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "O09106", "label": "O09106", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q9WVL7", "label": "Q9WVL7", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P58801", "label": "P58801", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P25446", "label": "P25446", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q9JJP2", "label": "Q9JJP2", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "O35228", "label": "O35228", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P07750", "label": "P07750", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P13597", "label": "P13597", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P69892", "label": "P69892", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q62226", "label": "Q62226", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P70274", "label": "P70274", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P46414", "label": "P46414", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "O08863", "label": "O08863", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P35230", "label": "P35230", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P11087", "label": "P11087", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P51480", "label": "P51480", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P47806", "label": "P47806", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q9QZ67", "label": "Q9QZ67", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q60989", "label": "Q60989", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P41245", "label": "P41245", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P70288", "label": "P70288", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P11103", "label": "P11103", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P27512", "label": "P27512", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P10148", "label": "P10148", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "O89093", "label": "O89093", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P11276", "label": "P11276", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q64287", "label": "Q64287", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P51661", "label": "P51661", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "O55188", "label": "O55188", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P13405", "label": "P13405", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q61985", "label": "Q61985", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q08481", "label": "Q08481", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P26187", "label": "P26187", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q62035", "label": "Q62035", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q91YE5", "label": "Q91YE5", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P39689", "label": "P39689", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q9Z0Z7", "label": "Q9Z0Z7", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q9JHH5", "label": "Q9JHH5", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P59997", "label": "P59997", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q64373", "label": "Q64373", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q99J95", "label": "Q99J95", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P10417", "label": "P10417", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P53690", "label": "P53690", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q07235", "label": "Q07235", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P16056", "label": "P16056", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "O70422", "label": "O70422", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P09671", "label": "P09671", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P56528", "label": "P56528", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q38HM4", "label": "Q38HM4", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "O88509", "label": "O88509", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P16951", "label": "P16951", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P97481", "label": "P97481", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P21274", "label": "P21274", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P30882", "label": "P30882", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q00609", "label": "Q00609", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P01580", "label": "P01580", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "O88898", "label": "O88898", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P28352", "label": "P28352", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P35821", "label": "P35821", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P15247", "label": "P15247", "shape": "dot"}]);
+        edges = new vis.DataSet([{"arrows": "to", "color": "rgb(240,50,50)", "from": "Q923E4", "title": "Repression", "to": "Q04207"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O70494", "title": "Activation", "to": "P13864"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P42227", "title": "Repression", "to": "Q04207"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O89090", "title": "Unknown", "to": "P13864"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q61501", "title": "Unknown", "to": "P13864"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P25799"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P11859"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P31750"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P08226"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Repression", "to": "P51480"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Repression", "to": "Q9Z1W8"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P10417"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "Q64373"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "O08863"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "Q60989"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P21274"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Repression", "to": "Q01815"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "Q62401"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P10148"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "O89093"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P30882"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P25322"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P56528"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P27512"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "Q00609"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P42082"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "Q99J95"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Repression", "to": "P46414"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Repression", "to": "P43241"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "O35732"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Repression", "to": "O54942"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Repression", "to": "P11087"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P07141"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P97792"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P17515"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "Q9JHH5"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "Q9WVL7"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P70658"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "Q9QZ82"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "Q059Y8"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "O55188"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P13864"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "O35228"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P97481"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P25446"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P41047"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P59997"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P11276"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P01101"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P09528"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P47806"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Repression", "to": "P35428"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Repression", "to": "Q08048"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P51661"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P13597"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Repression", "to": "P01575"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P01580"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "Q5SF07"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P18893"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P43432"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P04351"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "Q9EQ14"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P07750"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P08505"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P15247"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "Q64287"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "Q8C863"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "Q9Z0Z7"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P27814"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Repression", "to": "Q60860"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "Q07174"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P16056"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P26187"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P28862"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P53690"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P41245"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P01108"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "Q9ER97"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P29477"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "Q61985"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Repression", "to": "O70571"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "Q08481"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P49764"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "O88593"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P70669"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Repression", "to": "P23204"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "Q9QZ67"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P97372"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "Q62035"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Repression", "to": "O08586"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P35821"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P35230"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P58801"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P51450"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P70274"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "Q07235"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "Q62226"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P43006"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P14142"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P09671"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "Q04887"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P70302"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "Q9Z1W9"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P24604"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "Q9QUN7"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P06804"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "Q60769"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P47741"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "Q9WU72"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "Q38HM4"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P02340"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Repression", "to": "O88898"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Repression", "to": "Q9JJP2"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P26687"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Activation", "to": "P52624"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P29533"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "P22561"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04207", "title": "Unknown", "to": "Q00899"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q61658", "title": "Unknown", "to": "P13864"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q3THK3", "title": "HPFH(-198) complex", "to": "P13864"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "B2RWS6", "title": "Activation", "to": "P13864"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q07243", "title": "Unknown", "to": "P13864"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P02340", "title": "Unknown", "to": "Q04207"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P25799", "title": "p50-p65 Nf(kappa)B complex", "to": "Q04207"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P13864", "title": "HPFH(-198) complex", "to": "O70422"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P13864", "title": "HPFH(-198) complex", "to": "P69892"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P13864", "title": "HPFH(-198) complex", "to": "Q3THK3"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P13864", "title": "DNMT1-HDAC2-DMAP1 complex", "to": "P70288"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P13864", "title": "DNMT1-HDAC2-DMAP1 complex", "to": "Q9JI44"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P13864", "title": "Tip5-Dnmt-Hdac1 complex", "to": "O09106"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P13864", "title": "Tip5-Dnmt-Hdac1 complex", "to": "O88509"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P13864", "title": "Tip5-Dnmt-Hdac1 complex", "to": "Q91YE5"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P13864", "title": "Unknown", "to": "P39689"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P13864", "title": "Unknown", "to": "P13864"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P13864", "title": "Unknown", "to": "P02802"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P13864", "title": "Unknown", "to": "Q99JW5"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P13864", "title": "Unknown", "to": "P02340"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9JI44", "title": "DNMT1-HDAC2-DMAP1 complex", "to": "P13864"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O09106", "title": "Tip5-Dnmt-Hdac1 complex", "to": "P13864"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P69892", "title": "HPFH(-198) complex", "to": "P13864"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P70288", "title": "DNMT1-HDAC2-DMAP1 complex", "to": "P13864"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P11103", "title": "Unknown", "to": "Q04207"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P13405", "title": "Unknown", "to": "P13864"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q91YE5", "title": "Tip5-Dnmt-Hdac1 complex", "to": "P13864"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O70422", "title": "HPFH(-198) complex", "to": "P13864"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O88509", "title": "Tip5-Dnmt-Hdac1 complex", "to": "P13864"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P16951", "title": "Activation", "to": "Q04207"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P28352", "title": "Activation", "to": "Q04207"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+        network.on("stabilizationProgress", function(params) {
+      		document.getElementById('loadingBar').removeAttribute("style");
+	        var maxWidth = 496;
+	        var minWidth = 20;
+	        var widthFactor = params.iterations/params.total;
+	        var width = Math.max(minWidth,maxWidth * widthFactor);
+
+	        document.getElementById('bar').style.width = width + 'px';
+	        document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+	    });
+	    network.once("stabilizationIterationsDone", function() {
+	        document.getElementById('text').innerHTML = '100%';
+	        document.getElementById('bar').style.width = '496px';
+	        document.getElementById('loadingBar').style.opacity = 0;
+	        // really clean the dom element
+	        setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+	    });
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

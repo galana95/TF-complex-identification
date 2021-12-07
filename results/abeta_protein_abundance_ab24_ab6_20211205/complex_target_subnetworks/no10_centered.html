@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>Interactions (blue->complex, red->gene target) of proteins with significant abundance change (light green)</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750px;
+            background-color: #FFFFFF;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P38210", "label": "P38210", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9URQ5", "label": "Q9URQ5", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q06639", "label": "Q06639", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q06488", "label": "Q06488", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q05123", "label": "Q05123", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q06168", "label": "Q06168", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P32597", "label": "P32597", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P25632", "label": "P25632", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q07979", "label": "Q07979", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P53236", "label": "P53236", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P43609", "label": "P43609", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "black"}, "id": "P38781", "label": "P38781", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q12406", "label": "Q12406", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P53330", "label": "P53330", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P32832", "label": "P32832", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q02206", "label": "Q02206", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q03124", "label": "Q03124", "shape": "dot"}]);
+        edges = new vis.DataSet([{"arrows": "to", "color": "rgb(20,60,250)", "from": "P38210", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "P38781"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9URQ5", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "P38781"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q06639", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "P38781"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q06488", "title": "RSC chromatin remodelling complex, variant RSC2", "to": "P38781"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q05123", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "P38781"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q06168", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "P38781"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P32597", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "P38781"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P25632", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "P38781"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q07979", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "P38781"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P53236", "title": "RSC chromatin remodelling complex, variant RSC1", "to": "P38781"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P43609", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "P38781"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P38781", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "P25632"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P38781", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "P32597"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P38781", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "P32832"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P38781", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "P38210"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P38781", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "P43609"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P38781", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "P53330"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P38781", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "Q02206"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P38781", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "Q03124"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P38781", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "Q05123"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P38781", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "Q06168"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P38781", "title": "RSC chromatin remodelling complex, variant RSC2", "to": "Q06488"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P38781", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "Q06639"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P38781", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "Q07979"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P38781", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "Q12406"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P38781", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "Q9URQ5"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P38781", "title": "RSC chromatin remodelling complex, variant RSC1", "to": "P53236"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q12406", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "P38781"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P53330", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "P38781"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P32832", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "P38781"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q02206", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "P38781"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q03124", "title": "RSC chromatin remodelling complex, variant RSC2;RSC chromatin remodelling complex, variant RSC1", "to": "P38781"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

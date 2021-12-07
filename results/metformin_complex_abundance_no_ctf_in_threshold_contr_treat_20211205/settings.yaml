@@ -1,0 +1,44 @@
+COMPARISON SETTINGS: default
+DATA TYPE: Complex
+FILTER SETTINGS:
+  COMPLEX DB:
+  - complexportal
+  - corum
+  FILTER:
+  - tf_complex
+  - minprotnum2
+  OPERATOR: UNION
+  TARGET DB:
+  - tftarget
+  - trrust
+  TFCOMPLEX: TF
+  TRANSCRIPTION COFACTOR DB:
+  - animal_tfdb3
+  TRANSCRIPTION FACTOR DB:
+  - jaspar
+  - human_tfnames
+  - animal_tfdb3
+  - yeastract
+INPUT1:
+  DELIMITER: ;
+  FILENAME: prediction_normal_predcertain.csv
+  NAME: Control
+INPUT2:
+  DELIMITER: ;
+  FILENAME: prediction_met_predcertain.csv
+  NAME: Treated
+REPORTER VISUALIZER SETTINGS:
+  COMPLEX: true
+  OVERWRITE EXISTING: true
+  REGULATION: true
+  SAVE FIGURES: true
+  THEME: Light
+  TISSUE:
+  - heart
+  - blood
+  - embryo
+  USE DB: ALL
+  USE LOG: true
+RUN NAME: metformin_complex_abundance_no_ctf_in_threshold
+SPECIES: mouse
+VERBOSITY: 3

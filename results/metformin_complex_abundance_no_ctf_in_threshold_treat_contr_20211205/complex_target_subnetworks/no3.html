@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>Interactions (blue->complex, red->gene target) of proteins with significant abundance change (light green)</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750px;
+            background-color: #FFFFFF;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9QZ82", "label": "Q9QZ82", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O35740", "label": "O35740", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q91WF3", "label": "Q91WF3", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P26687", "label": "P26687", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P27786", "label": "P27786", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "black"}, "id": "P33242", "label": "P33242", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P21300", "label": "P21300", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "black"}, "id": "P70365", "label": "P70365", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P22724", "label": "P22724", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q64326", "label": "Q64326", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O09108", "label": "O09108", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P20263", "label": "P20263", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P19091", "label": "P19091", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O35613", "label": "O35613", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P27106", "label": "P27106", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P28649", "label": "P28649", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O88689", "label": "O88689", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O89090", "label": "O89090", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q04997", "label": "Q04997", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P39689", "label": "P39689", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9Z0J4", "label": "Q9Z0J4", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P15539", "label": "P15539", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q8CFN5", "label": "Q8CFN5", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P28700", "label": "P28700", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q7TMS5", "label": "Q7TMS5", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P37238", "label": "P37238", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P45481", "label": "P45481", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q08369", "label": "Q08369", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q61066", "label": "Q61066", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q7M764", "label": "Q7M764", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P22561", "label": "P22561", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P11688", "label": "P11688", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P51557", "label": "P51557", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P11416", "label": "P11416", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O54915", "label": "O54915", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q04887", "label": "Q04887", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P41778", "label": "P41778", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q99K85", "label": "Q99K85", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P97474", "label": "P97474", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P19785", "label": "P19785", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q60994", "label": "Q60994", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P03940", "label": "P03940", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O35437", "label": "O35437", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9Z1E3", "label": "Q9Z1E3", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q8BJ14", "label": "Q8BJ14", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P54130", "label": "P54130", "shape": "dot"}]);
+        edges = new vis.DataSet([{"arrows": "to", "color": "rgb(240,50,50)", "from": "O35740", "title": "Repression", "to": "P54130"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O35740", "title": "Activation", "to": "P33242"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O35740", "title": "Activation", "to": "P37238"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O35740", "title": "Activation", "to": "P22724"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P26687", "title": "Unknown", "to": "Q7TMS5"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P26687", "title": "Repression", "to": "P39689"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P26687", "title": "Repression", "to": "P19785"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P26687", "title": "Repression", "to": "Q04887"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Unknown", "to": "Q7TMS5"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Unknown", "to": "Q91WF3"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Unknown", "to": "P21300"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Unknown", "to": "P27106"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Activation", "to": "O88689"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Activation", "to": "Q9QZ82"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Unknown", "to": "P15539"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Unknown", "to": "P27786"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Unknown", "to": "P28649"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Activation", "to": "P03940"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Repression", "to": "P54130"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Unknown", "to": "Q04997"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Unknown", "to": "O09108"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Activation", "to": "Q64326"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Unknown", "to": "Q9Z0J4"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Unknown", "to": "Q61066"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Unknown", "to": "P33242"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Activation", "to": "P41778"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Activation", "to": "P20263"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Activation", "to": "Q04887"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Unknown", "to": "P51557"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P33242", "title": "Activation", "to": "P22724"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P70365", "title": "Src1-Ep300-Crebbp complex", "to": "P45481"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P70365", "title": "Src1-Ep300-Crebbp complex", "to": "Q8BJ14"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P70365", "title": "PXR-NCOA1 activated nuclear receptor complex", "to": "O54915"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P70365", "title": "RARalpha-NCOA1 activated retinoic acid receptor complex", "to": "P11416"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P70365", "title": "PPARgamma-NCOA1 activated nuclear receptor complex", "to": "P37238"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P70365", "title": "RXRalpha-NCOA1 activated retinoic acid receptor complex", "to": "P28700"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P70365", "title": "Unknown", "to": "Q60994"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P70365", "title": "Unknown", "to": "P19091"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P70365", "title": "Activation", "to": "P39689"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P70365", "title": "Activation", "to": "P19785"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P70365", "title": "Unknown", "to": "Q08369"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P70365", "title": "Activation", "to": "P11688"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P70365", "title": "Unknown", "to": "Q8CFN5"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P70365", "title": "Activation", "to": "Q9Z1E3"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P70365", "title": "Unknown", "to": "Q99K85"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P70365", "title": "Activation", "to": "P26687"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P70365", "title": "Activation", "to": "Q7M764"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P20263", "title": "Unknown", "to": "P39689"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P20263", "title": "Unknown", "to": "Q61066"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P20263", "title": "Unknown", "to": "P20263"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P19091", "title": "Repression", "to": "Q61066"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P19091", "title": "Unknown", "to": "Q99K85"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O35613", "title": "Activation", "to": "P33242"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O89090", "title": "Unknown", "to": "Q91WF3"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O89090", "title": "Unknown", "to": "P19091"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O89090", "title": "Unknown", "to": "P39689"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O89090", "title": "Unknown", "to": "Q9QZ82"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O89090", "title": "Activation", "to": "P11688"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O89090", "title": "Unknown", "to": "P33242"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O89090", "title": "Unknown", "to": "P20263"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O89090", "title": "Unknown", "to": "O89090"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O89090", "title": "Unknown", "to": "P51557"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P28700", "title": "RXRalpha-PXR nuclear receptor complex", "to": "O54915"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P28700", "title": "RXRalpha-RARalpha retinoic acid receptor complex;RXRalpha-RARalpha-NCOA2 retinoic acid receptor complex", "to": "P11416"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P28700", "title": "RXRalpha-RXRalpha retinoic acid receptor complex", "to": "P28700"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P28700", "title": "RXRalpha-NCOA1 activated retinoic acid receptor complex", "to": "P70365"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P37238", "title": "PPARgamma-NCOA1 activated nuclear receptor complex", "to": "P70365"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P37238", "title": "Unknown", "to": "Q60994"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P45481", "title": "Src1-Ep300-Crebbp complex", "to": "P70365"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P45481", "title": "Src1-Ep300-Crebbp complex", "to": "Q8BJ14"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P45481", "title": "Repression", "to": "P45481"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P45481", "title": "Activation", "to": "Q9QZ82"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P45481", "title": "Unknown", "to": "P19785"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P45481", "title": "Unknown", "to": "P51557"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q08369", "title": "Unknown", "to": "P27106"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q08369", "title": "Unknown", "to": "Q8CFN5"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q08369", "title": "Unknown", "to": "P51557"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q61066", "title": "Repression", "to": "Q9QZ82"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q61066", "title": "Repression", "to": "P28649"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q61066", "title": "Repression", "to": "P33242"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q61066", "title": "Repression", "to": "P20263"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q61066", "title": "Repression", "to": "P37238"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q61066", "title": "Repression", "to": "P51557"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P22561", "title": "Activation", "to": "P27106"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P22561", "title": "Activation", "to": "Q04997"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P22561", "title": "Activation", "to": "P33242"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P22561", "title": "Unknown", "to": "P22724"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P11416", "title": "RXRalpha-RARalpha retinoic acid receptor complex;RXRalpha-RARalpha-NCOA2 retinoic acid receptor complex", "to": "P28700"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P11416", "title": "RARalpha-NCOA1 activated retinoic acid receptor complex", "to": "P70365"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P11416", "title": "Unknown", "to": "P97474"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P11416", "title": "Activation", "to": "P20263"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O54915", "title": "RXRalpha-PXR nuclear receptor complex", "to": "P28700"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O54915", "title": "PXR-NCOA1 activated nuclear receptor complex", "to": "P70365"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O54915", "title": "Activation", "to": "P21300"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O54915", "title": "Activation", "to": "P39689"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04887", "title": "Repression", "to": "P39689"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "Q04887", "title": "Activation", "to": "P54130"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P41778", "title": "Activation", "to": "P27786"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P41778", "title": "Activation", "to": "Q64326"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P41778", "title": "Activation", "to": "P41778"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P97474", "title": "Activation", "to": "Q08369"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P97474", "title": "Activation", "to": "Q8CFN5"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P97474", "title": "Unknown", "to": "P33242"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P19785", "title": "Repression", "to": "P39689"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P19785", "title": "Unknown", "to": "P28649"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P19785", "title": "Repression", "to": "P37238"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O35437", "title": "Unknown", "to": "P19091"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O35437", "title": "Repression", "to": "P39689"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O35437", "title": "Repression", "to": "P33242"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q8BJ14", "title": "Src1-Ep300-Crebbp complex", "to": "P45481"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q8BJ14", "title": "Src1-Ep300-Crebbp complex", "to": "P70365"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>Interactions (blue->complex, red->gene target) of proteins with significant abundance change (light green)</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750px;
+            background-color: #FFFFFF;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9ULV0", "label": "Q9ULV0", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P0DMV8", "label": "P0DMV8", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q99572", "label": "Q99572", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O14745", "label": "O14745", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q96NW7", "label": "Q96NW7", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P48764", "label": "P48764", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "black"}, "id": "O00151", "label": "O00151", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O95425", "label": "O95425", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P42356", "label": "P42356", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P05107", "label": "P05107", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P60709", "label": "P60709", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P11142", "label": "P11142", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P23467", "label": "P23467", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P08238", "label": "P08238", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q16787", "label": "Q16787", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q13368", "label": "Q13368", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9UQM7", "label": "Q9UQM7", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q15599", "label": "Q15599", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O14964", "label": "O14964", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O75382", "label": "O75382", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "black"}, "id": "O43707", "label": "O43707", "shape": "dot"}]);
+        edges = new vis.DataSet([{"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9ULV0", "title": "CART complex", "to": "O43707"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P0DMV8", "title": "P2X7 receptor signalling complex", "to": "O43707"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q99572", "title": "P2X7 receptor signalling complex", "to": "O43707"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O14745", "title": "SLC9A3R1-ACTN4 complex", "to": "O43707"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q96NW7", "title": "Ternary complex (LRRC7, CAMK2a, ACTN4)", "to": "O43707"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P48764", "title": "NHE3-NHERF2-ACTN4, Ca(2+) induced", "to": "O43707"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O95425", "title": "P2X7 receptor signalling complex", "to": "O43707"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P42356", "title": "P2X7 receptor signalling complex", "to": "O43707"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P05107", "title": "P2X7 receptor signalling complex", "to": "O43707"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P60709", "title": "P2X7 receptor signalling complex", "to": "O43707"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P11142", "title": "P2X7 receptor signalling complex", "to": "O43707"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P23467", "title": "P2X7 receptor signalling complex", "to": "O43707"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P08238", "title": "P2X7 receptor signalling complex", "to": "O43707"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q16787", "title": "P2X7 receptor signalling complex", "to": "O43707"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q13368", "title": "P2X7 receptor signalling complex", "to": "O43707"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9UQM7", "title": "Ternary complex (LRRC7, CAMK2a, ACTN4)", "to": "O43707"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q15599", "title": "NHE3-NHERF2-ACTN4, Ca(2+) induced", "to": "O43707"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O14964", "title": "CART complex", "to": "O43707"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O75382", "title": "CART complex", "to": "O43707"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O43707", "title": "P2X7 receptor signalling complex", "to": "O95425"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O43707", "title": "P2X7 receptor signalling complex", "to": "P05107"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O43707", "title": "P2X7 receptor signalling complex", "to": "P08238"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O43707", "title": "P2X7 receptor signalling complex", "to": "P0DMV8"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O43707", "title": "P2X7 receptor signalling complex", "to": "P11142"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O43707", "title": "P2X7 receptor signalling complex", "to": "P23467"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O43707", "title": "P2X7 receptor signalling complex", "to": "P42356"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O43707", "title": "P2X7 receptor signalling complex", "to": "P60709"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O43707", "title": "P2X7 receptor signalling complex", "to": "Q13368"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O43707", "title": "P2X7 receptor signalling complex", "to": "Q16787"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O43707", "title": "P2X7 receptor signalling complex", "to": "Q99572"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O43707", "title": "Ternary complex (LRRC7, CAMK2a, ACTN4)", "to": "Q96NW7"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O43707", "title": "Ternary complex (LRRC7, CAMK2a, ACTN4)", "to": "Q9UQM7"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O43707", "title": "CART complex", "to": "O14964"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O43707", "title": "CART complex", "to": "O75382"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O43707", "title": "CART complex", "to": "Q9ULV0"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O43707", "title": "NHE3-NHERF2-ACTN4, Ca(2+) induced", "to": "P48764"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O43707", "title": "NHE3-NHERF2-ACTN4, Ca(2+) induced", "to": "Q15599"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O43707", "title": "SLC9A3R1-ACTN4 complex", "to": "O14745"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

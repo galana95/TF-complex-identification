@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>Proteins of complexes with significant abundance differences. Red & Blue -> proteins present only in one condition, Green -> proteins present in both.</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750px;
+            background-color: #FFFFFF;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P11632", "label": "P11632", "shape": "dot", "size": 22.93405835868787}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P11633", "label": "P11633", "shape": "dot", "size": 15.802721490568072}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "Q03435", "label": "Q03435", "shape": "dot", "size": 15.599588696150775}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "Q06639", "label": "Q06639", "shape": "dot", "size": 14.730876162784448}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P38781", "label": "P38781", "shape": "dot", "size": 14.730876162784448}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P03069", "label": "P03069", "shape": "dot", "size": 14.671609689778132}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P41546", "label": "P41546", "shape": "dot", "size": 14.671609689778132}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P33748", "label": "P33748", "shape": "dot", "size": 16.160106304818214}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P33749", "label": "P33749", "shape": "dot", "size": 14.126881620209229}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P32607", "label": "P32607", "shape": "dot", "size": 17.16057419193055}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P38165", "label": "P38165", "shape": "dot", "size": 16.686201416634667}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P11938", "label": "P11938", "shape": "dot", "size": 16.119999918468004}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "Q02457", "label": "Q02457", "shape": "dot", "size": 14.03272854035661}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P40059", "label": "P40059", "shape": "dot", "size": 15.836155952617098}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P34219", "label": "P34219", "shape": "dot", "size": 13.692115781335522}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P17106", "label": "P17106", "shape": "dot", "size": 21.012975061052323}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P07270", "label": "P07270", "shape": "dot", "size": 14.261363111690581}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P46954", "label": "P46954", "shape": "dot", "size": 13.935939940218857}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P39113", "label": "P39113", "shape": "dot", "size": 13.935939940218857}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P33417", "label": "P33417", "shape": "dot", "size": 17.625590107264006}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P07248", "label": "P07248", "shape": "dot", "size": 13.397870951597316}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P53968", "label": "P53968", "shape": "dot", "size": 17.461443767459365}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "Q02100", "label": "Q02100", "shape": "dot", "size": 13.397870951597316}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P40535", "label": "P40535", "shape": "dot", "size": 15.567178538963363}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P11746", "label": "P11746", "shape": "dot", "size": 13.794175676883054}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P07249", "label": "P07249", "shape": "dot", "size": 13.794175676883054}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P47043", "label": "P47043", "shape": "dot", "size": 12.930167946706389}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P39001", "label": "P39001", "shape": "dot", "size": 17.84620695647025}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P12383", "label": "P12383", "shape": "dot", "size": 14.315137044694652}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P40466", "label": "P40466", "shape": "dot", "size": 13.072663719647657}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P41813", "label": "P41813", "shape": "dot", "size": 13.072663719647657}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P19880", "label": "P19880", "shape": "dot", "size": 13.072663719647657}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P24813", "label": "P24813", "shape": "dot", "size": 13.072663719647657}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P38128", "label": "P38128", "shape": "dot", "size": 12.647891239432928}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "Q12224", "label": "Q12224", "shape": "dot", "size": 12.647891239432928}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P38889", "label": "P38889", "shape": "dot", "size": 13.173199179584639}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P10961", "label": "P10961", "shape": "dot", "size": 13.173199179584639}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P26370", "label": "P26370", "shape": "dot", "size": 13.241446071165521}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P21657", "label": "P21657", "shape": "dot", "size": 18.89314936807468}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P39970", "label": "P39970", "shape": "dot", "size": 13.28274329515872}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P40467", "label": "P40467", "shape": "dot", "size": 13.113984737162742}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P32862", "label": "P32862", "shape": "dot", "size": 13.516230340692063}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P33122", "label": "P33122", "shape": "dot", "size": 12.802713375357747}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "Q05854", "label": "Q05854", "shape": "dot", "size": 13.004583944988271}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "Q12151", "label": "Q12151", "shape": "dot", "size": 14.882483881905728}, {"color": "rgb(255,50,50)", "font": {"color": "black"}, "id": "Q12180", "label": "Q12180", "shape": "dot", "size": 12.250013525181476}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P40969", "label": "P40969", "shape": "dot", "size": 15.079464263992243}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P38140", "label": "P38140", "shape": "dot", "size": 12.122583299281217}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P43634", "label": "P43634", "shape": "dot", "size": 12.759409708033841}, {"color": "rgb(255,50,50)", "font": {"color": "black"}, "id": "P05085", "label": "P05085", "shape": "dot", "size": 11.415055532854145}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P25042", "label": "P25042", "shape": "dot", "size": 12.464211617454819}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "Q05958", "label": "Q05958", "shape": "dot", "size": 13.63148972618102}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P0CE41", "label": "P0CE41", "shape": "dot", "size": 13.402976035059659}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "Q04411", "label": "Q04411", "shape": "dot", "size": 11.811291649640609}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "Q03973", "label": "Q03973", "shape": "dot", "size": 12.10136665375509}, {"color": "rgb(255,50,50)", "font": {"color": "black"}, "id": "P50104", "label": "P50104", "shape": "dot", "size": 11.0}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P38699", "label": "P38699", "shape": "dot", "size": 12.29649574834677}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P47988", "label": "P47988", "shape": "dot", "size": 11.741467711374733}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P33200", "label": "P33200", "shape": "dot", "size": 11.741467711374733}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "P25611", "label": "P25611", "shape": "dot", "size": 12.21463796566643}, {"color": "rgb(5,255,50)", "font": {"color": "black"}, "id": "Q04052", "label": "Q04052", "shape": "dot", "size": 11.302745835833866}, {"color": "rgb(10,60,255)", "font": {"color": "black"}, "id": "Q08904", "label": "Q08904", "shape": "dot", "size": 11.584962500721156}]);
+        edges = new vis.DataSet([{"color": "rgb(42.6228381037821,42.486498212515016,204.43525242171253)", "from": "P11633", "to": "P11632", "width": 4}, {"color": "rgb(217.53893564200322,252.1609140187979,243.10724312572148)", "from": "P11632", "to": "Q03435", "width": 4}, {"color": "rgb(10.351297651526977,184.2933182514255,242.59590617639142)", "from": "P03069", "to": "P41546", "width": 4}, {"color": "rgb(132.62964747146253,123.53527980223203,107.115671991189)", "from": "P38165", "to": "P32607", "width": 4}, {"color": "rgb(25.201704971968297,160.03162806158429,123.30644498355107)", "from": "P33748", "to": "P53968", "width": 4}, {"color": "rgb(152.54471774560636,41.53442379188857,244.16675277615465)", "from": "Q06639", "to": "P38781", "width": 4}, {"color": "rgb(109.8764888539439,73.08694454771097,82.54142124534832)", "from": "P32607", "to": "P17106", "width": 4}, {"color": "rgb(16.026924737771566,221.20627539109054,139.11471984637058)", "from": "P17106", "to": "P07270", "width": 4}, {"color": "rgb(156.82643024222492,199.99185157951544,96.7810793288103)", "from": "P33417", "to": "P11632", "width": 4}, {"color": "rgb(107.06781321787409,66.89093041545519,193.4826490768037)", "from": "P11746", "to": "P07249", "width": 4}, {"color": "rgb(174.51412640585468,104.03956078610949,10.47344437128558)", "from": "P39113", "to": "P46954", "width": 4}, {"color": "rgb(17.339162597500916,141.4081034949049,174.57212480392357)", "from": "P39970", "to": "P40535", "width": 4}, {"color": "rgb(113.65987134834785,176.16036116479236,249.54455722822135)", "from": "P33748", "to": "P33749", "width": 4}, {"color": "rgb(26.050628127467178,252.1709140071067,249.71054273247867)", "from": "Q02457", "to": "P11938", "width": 4}, {"color": "rgb(103.12555498018261,226.87337478027746,72.97339509338121)", "from": "P40467", "to": "P32862", "width": 4}, {"color": "rgb(176.02984968622468,39.79560197867181,220.66788240429727)", "from": "P40059", "to": "P11938", "width": 4}, {"color": "rgb(244.18570590128851,173.90239328925472,133.30732203642629)", "from": "P26370", "to": "P21657", "width": 4}, {"color": "rgb(252.91914392453853,193.4548109661677,189.75299096131985)", "from": "P34219", "to": "P40059", "width": 4}, {"color": "rgb(28.84422616934964,79.64883103934721,103.1311359836366)", "from": "P07248", "to": "P53968", "width": 4}, {"color": "rgb(28.97687369638743,116.26181661719576,54.51563715740164)", "from": "P38165", "to": "P17106", "width": 4}, {"color": "rgb(16.532181703686916,180.25016754872658,143.5111133937801)", "from": "P40535", "to": "Q02100", "width": 4}, {"color": "rgb(180.18399945281027,73.12735472397634,182.57307895250295)", "from": "P10961", "to": "P38889", "width": 4}, {"color": "rgb(79.43463012586645,112.90964083607278,125.6017449320328)", "from": "P40969", "to": "P21657", "width": 4}, {"color": "rgb(150.8812515865233,195.26754267364092,134.02064795966902)", "from": "P17106", "to": "P33122", "width": 4}, {"color": "rgb(195.48695318270558,43.120233181812466,170.9522847945162)", "from": "P39001", "to": "P12383", "width": 4}, {"color": "rgb(149.00731609594652,102.71928162260059,99.01268984210955)", "from": "P19880", "to": "P24813", "width": 4}, {"color": "rgb(20.263172163252136,169.0749938727801,53.71001680938167)", "from": "P40466", "to": "P41813", "width": 4}, {"color": "rgb(196.00645014222695,161.76459084180166,229.74347134841568)", "from": "P25042", "to": "P33417", "width": 4}, {"color": "rgb(96.81986323623255,54.462062723798226,25.461611312480954)", "from": "P25611", "to": "Q08904", "width": 4}, {"color": "rgb(75.79220586725268,102.0204612085547,147.04939874457403)", "from": "P53968", "to": "P47043", "width": 4}, {"color": "rgb(152.13753277966651,111.02617499943165,233.57995470670315)", "from": "P39001", "to": "P40969", "width": 4}, {"color": "rgb(54.36624645853328,181.09071903518128,17.168105657914793)", "from": "P12383", "to": "P33200", "width": 4}, {"color": "rgb(114.70734791055463,134.81711468435924,134.62409453124064)", "from": "P39001", "to": "P47988", "width": 4}, {"color": "rgb(33.27802688025042,37.00755245911341,244.82716066132684)", "from": "Q12151", "to": "P0CE41", "width": 4}, {"color": "rgb(8.433553881433937,68.3638191262628,159.65407229379224)", "from": "Q05958", "to": "Q12151", "width": 4}, {"color": "rgb(128.0455735926718,191.18737857721646,111.16500653218606)", "from": "Q05958", "to": "P0CE41", "width": 4}, {"color": "rgb(0.6169801453546597,184.85235684145906,162.46756076961756)", "from": "P33417", "to": "Q03973", "width": 4}, {"color": "rgb(0.6169801453546597,184.85235684145906,162.46756076961756)", "from": "P11632", "to": "Q03973", "width": 4}, {"color": "rgb(217.02630907034322,192.419005389293,144.80799223833225)", "from": "P38128", "to": "Q12224", "width": 4}, {"color": "rgb(151.5954281384565,174.81818668919,175.36954271598847)", "from": "Q04411", "to": "P21657", "width": 4}, {"color": "rgb(6.9403486428645635,238.97329877123678,115.7520127263576)", "from": "P38140", "to": "P21657", "width": 4}, {"color": "rgb(118.83063277469222,237.27192599641836,10.039872515515782)", "from": "P12383", "to": "P38699", "width": 4}, {"color": "rgb(147.88547710930604,56.861156265080496,87.8850812681319)", "from": "P33417", "to": "Q03435", "width": 4}, {"color": "rgb(215.43666046452182,137.76250467757097,148.1764697403522)", "from": "Q05854", "to": "P38699", "width": 4}, {"color": "rgb(175.09056050869984,87.35426686182899,28.437422638811995)", "from": "Q12151", "to": "P25611", "width": 4}, {"color": "rgb(254.6126620750676,140.89791479139834,251.95824192997202)", "from": "Q05854", "to": "Q12151", "width": 4}, {"color": "rgb(65.43745899049821,241.28202428173972,2.972916658837562)", "from": "P39001", "to": "P21657", "width": 4}, {"color": "rgb(208.25448133595805,133.5262670047448,250.68109075214446)", "from": "Q05958", "to": "P43634", "width": 4}, {"color": "rgb(28.154507124475344,253.71806217937203,192.6939809802026)", "from": "P40969", "to": "Q04052", "width": 4}, {"color": "rgb(255.67575948320302,111.1391651033997,126.46961943169165)", "from": "P25042", "to": "Q03973", "width": 4}, {"color": "rgb(77.65031413250549,212.9992513635885,115.86136413134355)", "from": "P21657", "to": "P32862", "width": 4}, {"color": "rgb(92.3030877798162,234.46683629944587,19.3405837585193)", "from": "P39001", "to": "Q12180", "width": 4}, {"color": "rgb(15.5553642404048,199.4264109219339,151.57169776879334)", "from": "P43634", "to": "Q12180", "width": 4}, {"color": "rgb(211.22631398911676,74.1236710046559,178.8669107631926)", "from": "P05085", "to": "P40969", "width": 4}, {"color": "rgb(142.36226900975558,200.51760845578812,94.94880156164456)", "from": "P50104", "to": "P43634", "width": 4}, {"color": "rgb(78.6092956924004,7.499593456547302,43.033301597498735)", "from": "P39001", "to": "P32862", "width": 4}, {"color": "rgb(127.12506336611716,140.1077263446683,39.357245839004804)", "from": "P33200", "to": "P39001", "width": 4}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>Interactions (blue->complex, red->gene target) of proteins with significant abundance change (light green)</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750px;
+            background-color: #121212;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "rgb(20,250,40)", "font": {"color": "white"}, "id": "P15208", "label": "P15208", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P02340", "label": "P02340", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P17095", "label": "P17095", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q9JKF1", "label": "Q9JKF1", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P35569", "label": "P35569", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P05480", "label": "P05480", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "Q91YI4", "label": "Q91YI4", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P28033", "label": "P28033", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P31750", "label": "P31750", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "O89090", "label": "O89090", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "white"}, "id": "P37238", "label": "P37238", "shape": "dot"}]);
+        edges = new vis.DataSet([{"arrows": "to", "color": "rgb(20,60,250)", "from": "P15208", "title": "Insr-Arrb2-Akt-Src complex, insulin induced", "to": "P05480"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P15208", "title": "Insr-Arrb2-Akt-Src complex, insulin induced", "to": "P31750"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P15208", "title": "Insr-Arrb2-Akt-Src complex, insulin induced", "to": "Q91YI4"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P15208", "title": "Insr-Irs1-Iqgap1 complex", "to": "P35569"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P15208", "title": "Insr-Irs1-Iqgap1 complex", "to": "Q9JKF1"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P02340", "title": "Repression", "to": "P15208"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P02340", "title": "Activation", "to": "P05480"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P02340", "title": "Unknown", "to": "P02340"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P17095", "title": "Unknown", "to": "P15208"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9JKF1", "title": "Insr-Irs1-Iqgap1 complex", "to": "P15208"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9JKF1", "title": "Insr-Irs1-Iqgap1 complex", "to": "P35569"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P35569", "title": "Insr-Irs1-Iqgap1 complex", "to": "P15208"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P35569", "title": "Insr-Irs1-Iqgap1 complex", "to": "Q9JKF1"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P05480", "title": "Arrb2-Akt-Src complex, insulin induced;Insr-Arrb2-Akt-Src complex, insulin induced", "to": "P31750"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P05480", "title": "Arrb2-Akt-Src complex, insulin induced;Insr-Arrb2-Akt-Src complex, insulin induced", "to": "Q91YI4"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P05480", "title": "Insr-Arrb2-Akt-Src complex, insulin induced", "to": "P15208"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q91YI4", "title": "Arrb2-Akt-Ppp2ca complex;Akt-Arrb2-Ppp2ca-Ppp2r2a complex;Arrb2-Akt-Src complex, insulin induced;Insr-Arrb2-Akt-Src complex, insulin induced", "to": "P31750"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q91YI4", "title": "Arrb2-Akt-Src complex, insulin induced;Insr-Arrb2-Akt-Src complex, insulin induced", "to": "P05480"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q91YI4", "title": "Insr-Arrb2-Akt-Src complex, insulin induced", "to": "P15208"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P28033", "title": "bZIP transcription factor complex, Cebpb-Cebpb", "to": "P28033"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P28033", "title": "Unknown", "to": "P15208"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P28033", "title": "Activation", "to": "P37238"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P28033", "title": "Unknown", "to": "P02340"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P31750", "title": "Arrb2-Akt-Ppp2ca complex;Akt-Arrb2-Ppp2ca-Ppp2r2a complex;Arrb2-Akt-Src complex, insulin induced;Insr-Arrb2-Akt-Src complex, insulin induced", "to": "Q91YI4"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P31750", "title": "Arrb2-Akt-Src complex, insulin induced;Insr-Arrb2-Akt-Src complex, insulin induced", "to": "P05480"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P31750", "title": "Insr-Arrb2-Akt-Src complex, insulin induced", "to": "P15208"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O89090", "title": "Unknown", "to": "P17095"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O89090", "title": "Unknown", "to": "P15208"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O89090", "title": "Unknown", "to": "P35569"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O89090", "title": "Unknown", "to": "O89090"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "O89090", "title": "Activation", "to": "P05480"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P37238", "title": "Repression", "to": "P15208"}, {"arrows": "to", "color": "rgb(240,50,50)", "from": "P37238", "title": "Activation", "to": "P02340"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

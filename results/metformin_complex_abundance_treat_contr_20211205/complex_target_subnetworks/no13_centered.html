@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>Interactions (blue->complex, red->gene target) of proteins with significant abundance change (light green)</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750px;
+            background-color: #FFFFFF;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "O88477", "label": "O88477", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9CPP0", "label": "Q9CPP0", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q8VEK3", "label": "Q8VEK3", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "black"}, "id": "Q61937", "label": "Q61937", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P09405", "label": "P09405", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "CHEBI:33699", "label": "CHEBI:33699", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P11103", "label": "P11103", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q7TMK9", "label": "Q7TMK9", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P62960", "label": "P62960", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "black"}, "id": "O70133", "label": "O70133", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q6A028", "label": "Q6A028", "shape": "dot"}]);
+        edges = new vis.DataSet([{"arrows": "to", "color": "rgb(20,60,250)", "from": "O88477", "title": "CRD-mediated mRNA stability complex", "to": "O70133"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9CPP0", "title": "B23-NPM3 complex;B23-NPM3 complex", "to": "Q61937"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q8VEK3", "title": "CRD-mediated mRNA stability complex", "to": "O70133"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q61937", "title": "SWAP complex", "to": "P09405"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q61937", "title": "SWAP complex", "to": "P11103"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q61937", "title": "SWAP complex", "to": "Q6A028"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q61937", "title": "B23-NPM3 complex;B23-NPM3 complex", "to": "Q9CPP0"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P09405", "title": "SWAP complex", "to": "Q61937"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "CHEBI:33699", "title": "CRD-mediated mRNA stability complex", "to": "O70133"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P11103", "title": "SWAP complex", "to": "Q61937"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q7TMK9", "title": "CRD-mediated mRNA stability complex", "to": "O70133"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P62960", "title": "CRD-mediated mRNA stability complex", "to": "O70133"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O70133", "title": "CRD-mediated mRNA stability complex", "to": "CHEBI:33699"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O70133", "title": "CRD-mediated mRNA stability complex", "to": "O88477"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O70133", "title": "CRD-mediated mRNA stability complex", "to": "P62960"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O70133", "title": "CRD-mediated mRNA stability complex", "to": "Q7TMK9"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "O70133", "title": "CRD-mediated mRNA stability complex", "to": "Q8VEK3"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q6A028", "title": "SWAP complex", "to": "Q61937"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

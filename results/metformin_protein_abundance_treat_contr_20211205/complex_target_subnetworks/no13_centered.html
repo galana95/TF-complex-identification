@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>Interactions (blue->complex, red->gene target) of proteins with significant abundance change (light green)</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750px;
+            background-color: #FFFFFF;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9D5V5", "label": "Q9D5V5", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P62869", "label": "P62869", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "P62878", "label": "P62878", "shape": "dot"}, {"color": "rgb(10,122,70)", "font": {"color": "black"}, "id": "Q9D0S4", "label": "Q9D0S4", "shape": "dot"}, {"color": "rgb(20,250,40)", "font": {"color": "black"}, "id": "P83940", "label": "P83940", "shape": "dot"}]);
+        edges = new vis.DataSet([{"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9D5V5", "title": "Ubiquitin E3 ligase (Neurl2, Tceb1, Tceb2, Cul5, Rbx1)", "to": "P83940"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P62869", "title": "Ubiquitin E3 ligase (Neurl2, Tceb1, Tceb2, Cul5, Rbx1)", "to": "P83940"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P62878", "title": "Ubiquitin E3 ligase (Neurl2, Tceb1, Tceb2, Cul5, Rbx1)", "to": "P83940"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "Q9D0S4", "title": "Ubiquitin E3 ligase (Neurl2, Tceb1, Tceb2, Cul5, Rbx1)", "to": "P83940"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P83940", "title": "Ubiquitin E3 ligase (Neurl2, Tceb1, Tceb2, Cul5, Rbx1)", "to": "P62869"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P83940", "title": "Ubiquitin E3 ligase (Neurl2, Tceb1, Tceb2, Cul5, Rbx1)", "to": "P62878"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P83940", "title": "Ubiquitin E3 ligase (Neurl2, Tceb1, Tceb2, Cul5, Rbx1)", "to": "Q9D0S4"}, {"arrows": "to", "color": "rgb(20,60,250)", "from": "P83940", "title": "Ubiquitin E3 ligase (Neurl2, Tceb1, Tceb2, Cul5, Rbx1)", "to": "Q9D5V5"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
